@@ -1,0 +1,30 @@
+# Classe que representa a entidade digimon
+from dataclasses import dataclass
+
+@dataclass
+class Digimon:
+    number: int = ""
+    digimon: str = ""
+    stage: str = ""
+    type: str = ""
+    atrribute: str = ""
+    memory: int = ""
+    equipSlots: int = ""
+    hpLv1: int = ""
+    spLv1: int = ""
+    atkLv1: int = ""
+    defLv1: int = ""
+    intLv1: int = ""
+    spdLv1: int = ""
+    hpLv50: int = ""
+    spLv50: int = ""
+    atkLv50: int = ""
+    defLv50: int = ""
+    intLv50: int = ""
+    spdLv50: int = ""
+    hpLv99: int = ""
+    spLv99: int = ""
+    atkLv99: int = ""
+    defLv99: int = ""
+    intLv99: int = ""
+    spdLv99: int = ""
