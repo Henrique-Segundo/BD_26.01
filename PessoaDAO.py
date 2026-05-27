@@ -30,7 +30,7 @@ class PessoaDAO:
             print(f"Erro ao listar pessoas: {erro}")
         return resultado
 
-    # Busca uma pessoa pelo cÃ³digo
+    # Busca uma pessoa pelo código
     def listar(self, codigo):
         try:
             with self.conectar() as connection:
