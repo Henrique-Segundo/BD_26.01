@@ -2,6 +2,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class Usuario:
+class LivroGenero:
     livroCodigo: int = None
-    GeneroCodigo: int = None
+    generoCodigo: int = None

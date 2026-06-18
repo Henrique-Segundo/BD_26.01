@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class Livro:
+class Diario:
     LivroCodigo: int = None
     UsuarioCodigo: int = None
     nota: str = ""
