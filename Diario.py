@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Diario:
-    LivroCodigo: int = None
-    UsuarioCodigo: int = None
+    livro_id: int = None
+    usuario_id: int = None
     nota: str = ""
     review: str = ""
-    dataVisualizacao: str = ""
+    data: str = ""

@@ -5,8 +5,8 @@ from Pessoa import Pessoa
 class PessoaDAO:
 
     # Conectar-se ao banco de dados
-    def conectar(self):
-        return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="cadastro")
+    #def conectar(self):
+    #    return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="cadastro")
 
     # Criar um objeto pessoa a partir da linha de dados
     def criar_pessoa(self, linha):

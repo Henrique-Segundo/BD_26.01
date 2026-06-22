@@ -3,6 +3,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Genero:
-    codigo: int = None
+    id: int = None
     nome: str = ""
     descricao: str = ""

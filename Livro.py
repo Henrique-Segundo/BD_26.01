@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Livro:
-    codigo: int = None
+    id: int = None
     nome: str = ""
     descricao: str = ""
-    dataPublicacao: str = ""
+    data_de_publicacao: str = ""

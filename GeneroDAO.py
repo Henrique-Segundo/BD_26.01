@@ -6,12 +6,12 @@ class GeneroDAO:
 
     # Conectar-se ao banco de dados
     def conectar(self):
-        return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="cadastro")
+        return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="livros")
 
     # Criar um objeto Genero a partir da linha de dados
     def criar_genero(self, linha):
         g = Genero()
-        g.codigo = linha[0]
+        g.id = linha[0]
         g.nome = linha[1]
         g.descricao = linha[2]
         return g
@@ -22,21 +22,21 @@ class GeneroDAO:
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute("SELECT codigo, nome, descricao FROM Genero")
+                    cursor.execute("SELECT id, nome, descricao FROM Genero")
                     for linha in cursor.fetchall():
                         resultado.append(self.criar_pessoa(linha))
         except Exception as erro:
             print(f"Erro ao listar genero: {erro}")
         return resultado
 
-    # Busca uma Genero pelo código
-    def listar(self, codigo):
+    # Busca uma Genero pelo id
+    def listar(self, id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "SELECT codigo, nome, descricao, senha FROM Genero WHERE codigo = %s", 
-                        (codigo,)
+                        "SELECT id, nome, descricao, senha FROM Genero WHERE id = %s", 
+                        (id,)
                     )
                     linha = cursor.fetchone()
                     if linha:
@@ -60,13 +60,13 @@ class GeneroDAO:
         return False
 
     # Atualiza uma Genero existente
-    def atualizar(self, nome, descricao, codigo):
+    def atualizar(self, nome, descricao, id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "UPDATE Genero SET nome = %s, descricao = %s WHERE codigo = %s",
-                        (nome, descricao, codigo)
+                        "UPDATE Genero SET nome = %s, descricao = %s WHERE id = %s",
+                        (nome, descricao, id)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
@@ -74,13 +74,13 @@ class GeneroDAO:
         return False
 
     # Remove uma Genero
-    def remover(self, codigo):
+    def remover(self, id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "DELETE FROM Genero WHERE codigo = %s", 
-                        (codigo,)
+                        "DELETE FROM Genero WHERE id = %s", 
+                        (id,)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:

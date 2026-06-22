@@ -6,16 +6,16 @@ class DiarioDAO:
 
     # Conectar-se ao banco de dados
     def conectar(self):
-        return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="cadastro")
+        return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="livros")
 
     # Criar um objeto Diario a partir da linha de dados
     def criar_diario(self, linha):
         d = Diario()
-        d.LivroCodigo = linha[0]
-        d.UsuarioCodigo = linha[1]
+        d.livro_id = linha[0]
+        d.usuario_id = linha[1]
         d.nota = linha[2]
         d.review = linha[3]
-        d.dataVisualizacao = linha[4]
+        d.data = linha[4]
         return d
 
     # Lista todas as Diario
@@ -24,37 +24,37 @@ class DiarioDAO:
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute("SELECT LivroCodigo, UsuarioCodigo, nota, review, dataVisualizacao FROM Diario")
+                    cursor.execute("SELECT livro_id, usuario_id, nota, review, data FROM Diario")
                     for linha in cursor.fetchall():
-                        resultado.append(self.criar_pessoa(linha))
+                        resultado.append(self.criar_diario(linha))
         except Exception as erro:
             print(f"Erro ao listar Diario: {erro}")
         return resultado
 
-    # Busca uma Diario pelo código do usuario
-    def listar(self, codigo):
+    # Busca uma Diario pelo id do usuario
+    def listar(self, id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "SELECT LivroCodigo, UsuarioCodigo, nota, review, dataVisualizacao FROM Diario WHERE UsuarioCodigo = %s", 
-                        (codigo,)
+                        "SELECT livro_id, usuario_id, nota, review, data FROM Diario WHERE usuario_id = %s", 
+                        (id,)
                     )
                     linha = cursor.fetchone()
                     if linha:
-                        return self.criar_pessoa(linha)
+                        return self.criar_diario(linha)
         except Exception as erro:
             print(f"Erro ao buscar Diario: {erro}")
         return None
 
     # Insere uma nova Diario
-    def inserir(self, LivroCodigo, UsuarioCodigo, nota, review, dataVisualizacao):
+    def inserir(self, livro_id, usuario_id, nota, review, data):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "INSERT INTO Diario (LivroCodigo, UsuarioCodigo, nota, review, dataVisualizacao) VALUES (%s, %s, %s, %s, %s)",
-                        (LivroCodigo, UsuarioCodigo, nota, review, dataVisualizacao)
+                        "INSERT INTO Diario (livro_id, usuario_id, nota, review, data) VALUES (%s, %s, %s, %s, %s)",
+                        (livro_id, usuario_id, nota, review, data)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
@@ -62,13 +62,13 @@ class DiarioDAO:
         return False
 
     # Atualiza uma Diario existente
-    def atualizar(self, LivroCodigo, nota, review, dataVisualizacao,UsuarioCodigo):
+    def atualizar(self, livro_id, nota, review, data,usuario_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "UPDATE Diario SET LivroCodigo = %s, nota = %s, review = %s, dataVisualizacao = %s WHERE UsuarioCodigo = %s",
-                        (LivroCodigo, nota, review, dataVisualizacao,UsuarioCodigo)
+                        "UPDATE Diario SET livro_id = %s, nota = %s, review = %s, data = %s WHERE usuario_id = %s",
+                        (livro_id, nota, review, data,usuario_id)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
@@ -76,13 +76,13 @@ class DiarioDAO:
         return False
 
     # Remove uma Diario
-    def remover(self, UsuarioCodigo):
+    def remover(self, usuario_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "DELETE FROM Diario WHERE UsuarioCodigo = %s", 
-                        (UsuarioCodigo,)
+                        "DELETE FROM Diario WHERE usuario_id = %s", 
+                        (usuario_id,)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:

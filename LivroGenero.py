@@ -3,5 +3,5 @@ from dataclasses import dataclass
 
 @dataclass
 class LivroGenero:
-    livroCodigo: int = None
-    generoCodigo: int = None
+    livro_id: int = None
+    genero_id: int = None
