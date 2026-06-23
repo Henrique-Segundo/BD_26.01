@@ -19,7 +19,7 @@ INSERT INTO Genero (id,nome, descricao) VALUES
 (3,'Fiction', 'Fiction is the telling of stories which are not real. More specifically, fiction is an imaginative form of narrative, one of the four basic rhetorical modes'),
 (4,'Fantasy','Fantasy is a genre that uses magic and other supernatural forms as a primary element of plot, theme, and/or setting.'),
 (5,'Young Adult','Young-adult fiction (often abbreviated as YA) is fiction written for, published for, or marketed to adolescents and young adults, roughly ages 13 to 18.'),
-(6,'Christmas','Christmas (Old English: Crīstesmæsse, meaning "Christ's Mass") is an annual commemoration of the birth of Jesus Christ and a widely observed cultural holiday, celebrated generally on December 25 by billions of people around the world. '),
+(6,'Christmas','Christmas (Old English: Crīstesmæsse, meaning "Christ"s Mass") is an annual commemoration of the birth of Jesus Christ and a widely observed cultural holiday, celebrated generally on December 25 by billions of people around the world. '),
 (7,'Mythology','The term mythology can refer to a body of myths or to any traditional story. ');
 
 INSERT INTO livro (id,nome, descricao, data_de_publicacao) VALUES 
@@ -35,16 +35,16 @@ INSERT INTO livroGenero (livro_id, genero_id) VALUES
 (4,4),(4,5),(4,);
 
 INSERT INTO usuario (id, nome, descricao, data_de_nascimento) VALUES
-(1,'Henrique','gosta de livros de misterio',10/12/2000),
-(2,'Amauri','gosto de musica e jogos',22/10/2002),
-(3,'Lucas','Prefere leituras técnicas',15/07/2002),
-(4,'Eduardo', 'gosta de leituras leves e fofas',17/07/2006),
-(5,'Felipe','Não gosta muito de ler',05/05/2005);
+(1,'Henrique','gosta de livros de misterio',2000/12/10),
+(2,'Amauri','gosto de musica e jogos',2002/10/22),
+(3,'Lucas','Prefere leituras técnicas',2002/07/15),
+(4,'Eduardo', 'gosta de leituras leves e fofas',2006/07/17),
+(5,'Felipe','Não gosta muito de ler',2005/05/05);
 
 INSERT INTO Diario (livro_id, usuario_id, nota, review, data) VALUES
-(3,1,4,'Gosto do primeiro conto','Ontem'),
-(4,1,3,'Bem mais ou menos mas gostava na adolecencia','Faz um tempo'),
-(2,2,5,'Ela é ambar','vou ler, confia'),
-(4,2,2,'Eu não gostei','05/05/2015'),
-(1,3,3,'foi ok','mês passado'),
-(1,4,4,'Muito fofo','Eu não li na real');
+(3,1,4,'Gosto do primeiro conto',2026/01/01),
+(4,1,3,'Bem mais ou menos mas gostava na adolecencia',2026/02/02),
+(2,2,5,'Ela é ambar',2026/03/03),
+(4,2,2,'Eu não gostei',2026/04/04),
+(1,3,3,'foi ok',2026/05/05),
+(1,4,4,'Muito fofo',2026/06/06);
