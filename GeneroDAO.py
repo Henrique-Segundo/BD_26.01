@@ -24,7 +24,7 @@ class GeneroDAO:
                 with connection.cursor() as cursor:
                     cursor.execute("SELECT id, nome, descricao FROM Genero")
                     for linha in cursor.fetchall():
-                        resultado.append(self.criar_pessoa(linha))
+                        resultado.append(self.criar_genero(linha))
         except Exception as erro:
             print(f"Erro ao listar genero: {erro}")
         return resultado
@@ -35,12 +35,12 @@ class GeneroDAO:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "SELECT id, nome, descricao, senha FROM Genero WHERE id = %s", 
+                        "SELECT id, nome, descricao FROM Genero WHERE id = %s",
                         (id,)
                     )
                     linha = cursor.fetchone()
                     if linha:
-                        return self.criar_pessoa(linha)
+                        return self.criar_genero(linha)
         except Exception as erro:
             print(f"Erro ao buscar Genero: {erro}")
         return None

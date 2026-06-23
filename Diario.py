@@ -1,3 +1,4 @@
+import datetime
 # Classe que representa o relacionamento entre livro e usuario
 from dataclasses import dataclass
 
@@ -7,4 +8,4 @@ class Diario:
     usuario_id: int = None
     nota: str = ""
     review: str = ""
-    data: str = ""
+    data: datetime = ""

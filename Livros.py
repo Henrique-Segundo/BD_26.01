@@ -1,9 +1,10 @@
+import datetime
 # Classe que representa a entidade pessoa
 from dataclasses import dataclass
 
 @dataclass
-class Livro:
+class Livros:
     id: int = None
     nome: str = ""
     descricao: str = ""
-    data_de_publicacao: str = ""
+    data_de_publicacao: datetime = ""

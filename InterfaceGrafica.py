@@ -1,6 +1,6 @@
 from DiarioDAO import DiarioDAO
 from GeneroDAO import GeneroDAO
-from LivroDAO import LivroDAO
+from LivrosDAO import LivrosDAO
 from LivroGeneroDAO import LivroGeneroDAO
 from UsuarioDAO import UsuarioDAO
 
@@ -10,7 +10,7 @@ class InterfaceGrafica:
     def __init__(self):
         self.diario_dao = DiarioDAO()
         self.genero_dao = GeneroDAO()
-        self.livro_dao = LivroDAO()
+        self.livro_dao = LivrosDAO()
         self.livroGenero_dao = LivroGeneroDAO()
         self.usuario_dao = UsuarioDAO()
 
@@ -23,21 +23,17 @@ class InterfaceGrafica:
             print("1 - Cadastro de Usuários")
             print("2 - Cadastro de Livros") 
             print("3 - Cadastro de Gêneros Literarios")
-            print("4 - Conectar Livros a gêneros")
-            print("5 - Gerir Diarios")
+            print("4 - Gerir Diarios")
             print("0 - Sair")
             print("==============================")
             opcao = input("Digite uma opção: ")
             if opcao == "1":
                 self.menu_cadastro_usuario()
-            if opcao == "2":
+            elif opcao == "2":
                 self.menu_cadastro_livro()
-            if opcao == "3":
+            elif opcao == "3":
                 self.menu_cadastro_genero()
-            if opcao == "4":
-                #self.()
-                print("nada")
-            if opcao == "5":
+            elif opcao == "4":
                 self.menu_cadastro_diario()
             elif opcao == "0":
                 print("Aplicação encerrada")
@@ -66,7 +62,6 @@ class InterfaceGrafica:
                 self.listar_todos_usuario()
             elif opcao == "2":
                 self.buscar_usuario()
-                self.buscar_diario() # TEM QUE CORRIGIR PARA CHAMAR AUTOMATICO DENTRO
             elif opcao == "3":
                 self.inserir_usuario()
             elif opcao == "4":
@@ -91,7 +86,7 @@ class InterfaceGrafica:
             print("Cadastro de livros")
             print("==============================")
             print("1 - Listar Todos")
-            print("2 - Buscar por Id")
+            print("2 - Buscar por Id (e ver gêneros)")
             print("3 - Inserir")
             print("4 - Atualizar")
             print("5 - Remover")
@@ -105,7 +100,13 @@ class InterfaceGrafica:
                 self.listar_todos_livro()
             elif opcao == "2":
                 self.buscar_livro()
-                self.buscar_livro_genero() # TEM QUE CORRIGIR PARA CHAMAR AUTOMATICO DENTRO
+                resp = input("Deseja listar os gêneros deste livro? (s/n): ")
+                if resp.lower() == 's':
+                    try:
+                        id = int(input("Digite o id do livro novamente: "))
+                        self.listar_generos_do_livro(id)
+                    except ValueError:
+                        print("Id inválido")
             elif opcao == "3":
                 self.inserir_livro()
             elif opcao == "4":
@@ -138,7 +139,7 @@ class InterfaceGrafica:
             print("==============================")
             opcao = input("Digite uma opção: ")
             if opcao == "1":
-                self.listar_todas_livro_genero()
+                self.listar_todos_generos()
             elif opcao == "2":
                 self.buscar_genero()
             elif opcao == "3":
@@ -152,7 +153,36 @@ class InterfaceGrafica:
             else:
                 print("Opção inválida")
 
-    # Listar todos os usuarios
+    # Menu de Diários
+    def menu_cadastro_diario(self):
+        while True:
+            print("==============================")
+            print("Gerenciar Diários")
+            print("==============================")
+            print("1 - Listar todos os diários")
+            print("2 - Buscar diários por usuário")
+            print("3 - Inserir novo diário")
+            print("4 - Atualizar diário")
+            print("5 - Remover diário (por usuário)")
+            print("0 - Voltar")
+            print("==============================")
+            opcao = input("Digite uma opção: ")
+            if opcao == "1":
+                self.listar_todos_diarios()
+            elif opcao == "2":
+                self.listar_diarios_por_usuario_interativo()
+            elif opcao == "3":
+                self.inserir_diario()
+            elif opcao == "4":
+                self.atualizar_diario()
+            elif opcao == "5":
+                self.remover_diario()
+            elif opcao == "0":
+                break
+            else:
+                print("Opção inválida")
+
+    # -------------------- Métodos para Usuário --------------------
     def listar_todos_usuario(self):
         usuarios = self.usuario_dao.listar_todas()
         if not usuarios:
@@ -163,7 +193,6 @@ class InterfaceGrafica:
                 f"Id = {u.id} | Nome = {u.nome} | Data de nascimento = {u.dataNascimento} | Descrição = {u.descricao}"
             )
 
-    # Buscar usuario
     def buscar_usuario(self):
         try:
             id = int(input("Digite o id: "))
@@ -173,11 +202,10 @@ class InterfaceGrafica:
                     f"Id = {u.id} | Nome = {u.nome} | Data de nascimento = {u.dataNascimento} | Descrição = {u.descricao}"
                 )
             else:
-                print("Usuário não encontrada.")
+                print("Usuário não encontrado.")
         except ValueError:
             print("Id inválido")
 
-    # Inserir usuario
     def inserir_usuario(self):
         nome = input("Nome: ").strip()
         descricao = input("Descrição do usuario: ").strip()
@@ -189,14 +217,13 @@ class InterfaceGrafica:
             else "Falha ao inserir_usuario registro"
         )
 
-    # Atualizar usuario
     def atualizar_usuario(self):
         try:
             id = int(input("Id: "))
             nome = input("Nome: ").strip()
             descricao = input("Descrição do usuario: ").strip()
             dataNascimento = input("Data de nascimento do usuario: ").strip()
-            sucesso = self.usuario_dao.inserir(nome, descricao, dataNascimento, id)
+            sucesso = self.usuario_dao.atualizar(nome, descricao, dataNascimento, id)
             print(
                 "Registro atualizado com sucesso"
                 if sucesso
@@ -205,7 +232,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Remover usuario
     def remover_usuario(self):
         try:
             id = int(input("Id: "))
@@ -218,7 +244,7 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Listar todos livros
+    # -------------------- Métodos para Livro --------------------
     def listar_todos_livro(self):
         livros = self.livro_dao.listar_todas()
         if not livros:
@@ -226,24 +252,22 @@ class InterfaceGrafica:
             return
         for l in livros:
             print(
-                f"Id = {l.id} | Nome = {l.nome} | Data de publicação = {l.dataPublicacao} | Descricao = {l.descricao}"
+                f"Id = {l.id} | Nome = {l.nome} | Data de publicação = {l.data_de_publicacao} | Descricao = {l.descricao}"
             )
 
-    # Buscar livro
     def buscar_livro(self):
         try:
             id = int(input("Digite o id: "))
             l = self.livro_dao.listar(id)
             if l:
                 print(
-                    f"Id = {l.id} | Nome = {l.nome} | Data de publicação = {l.dataPublicacao} | Descriçao = {l.descricao}"
+                    f"Id = {l.id} | Nome = {l.nome} | Data de publicação = {l.data_de_publicacao} | Descriçao = {l.descricao}"
                 )
             else:
                 print("Livro não encontrado.")
         except ValueError:
             print("Id inválido")
 
-    # Inserir livro
     def inserir_livro(self):
         nome = input("Nome: ").strip()
         descricao = input("Descrição: ").strip()
@@ -255,7 +279,6 @@ class InterfaceGrafica:
             else "Falha ao inserir registro"
         )
 
-    # Atualizar livro
     def atualizar_livro(self):
         try:
             id = int(input("Id: "))
@@ -271,7 +294,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Remover livro
     def remover_livro(self):
         try:
             id = int(input("Id: "))
@@ -284,18 +306,17 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Listar todos os generos
+    # -------------------- Métodos para Gênero --------------------
     def listar_todos_generos(self):
-        genero = self.genero_dao.listar_todas()
-        if not genero:
+        generos = self.genero_dao.listar_todas()
+        if not generos:
             print("Nenhum registro encontrado")
             return
-        for g in genero:
+        for g in generos:
             print(
                 f"Id = {g.id} | Nome = {g.nome} | Descrição = {g.descricao}"
             )
 
-    # Buscar genero
     def buscar_genero(self):
         try:
             id = int(input("Digite o id: "))
@@ -309,7 +330,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Inserir genero
     def inserir_genero(self):
         nome = input("Nome: ").strip()
         descricao = input("Descrição: ").strip()
@@ -320,7 +340,6 @@ class InterfaceGrafica:
             else "Falha ao inserir registro"
         )
 
-    # Atualizar genero
     def atualizar_genero(self):
         try:
             id = int(input("Id: "))
@@ -335,7 +354,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Remover genero
     def remover_genero(self):
         try:
             id = int(input("Id: "))
@@ -348,47 +366,121 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # Listar todas as relações livro genero
     def listar_todas_livro_genero(self):
         livro_genero = self.livroGenero_dao.listar_todas()
         if not livro_genero:
             print("Nenhum registro encontrado")
             return
         for lg in livro_genero:
+            g = self.genero_dao.listar(lg.genero_id)
+            l = self.livro_dao.listar(lg.livro_id)
             print(
-                f"Id do livro = {lg.livroId} | Id do gênero = {lg.generoId}"
+                f"Nome do livro = {l.nome} | Nome do gênero = {g.nome}"
             )
 
-    # Buscar livro genero
-    def buscar_livro_genero(self):
+    def listar_generos_do_livro(self, livro_id):
+        """Lista todos os gêneros associados a um livro."""
+        relacoes = self.livroGenero_dao.listar_por_livro(livro_id)
+        if not relacoes:
+            print("Este livro não possui gêneros associados.")
+        else:
+            print(f"Gêneros do livro {livro_id}:")
+            for lg in relacoes:
+                g = self.genero_dao.listar(lg.genero_id)
+                print(f" Nome do gênero = {g.nome}")
+
+    def inserir_livro_genero(self):
         try:
-            idL = int(input("Digite o id: "))
-            lg = self.livroGenero_dao.listar(idL)
-            if lg: # ISSO DEVE ESTAR RETORNANDO SO O PRIMEIRO GENERO
-                print(
-                    f"Id do livro = {lg.livroId} | Id do gênero = {lg.generoId}"
-                )
-            else:
-                print("Livro não encontrado.")
+            livro_id = int(input("Id do livro: ").strip())
+            genero_id = int(input("Id do genero: ").strip())
+            sucesso = self.livroGenero_dao.inserir(livro_id, genero_id)
+            print(
+                "Registro inserido com sucesso"
+                if sucesso
+                else "Falha ao inserir registro"
+            )
+        except ValueError:
+            print("IDs devem ser números inteiros.")
+
+    def remover_livro_genero(self):
+        try:
+            livro_id = int(input("Id do livro: ").strip())
+            genero_id = int(input("Id do genero: ").strip())
+            sucesso = self.livroGenero_dao.remover_por_livro_genero(livro_id, genero_id)
+            print(
+                "Registro removido com sucesso"
+                if sucesso
+                else "Falha ao remover registro"
+            )
+        except ValueError:
+            print("IDs devem ser números inteiros.")
+
+    def listar_todos_diarios(self):
+        diarios = self.diario_dao.listar_todas()
+        if not diarios:
+            print("Nenhum registro encontrado")
+            return
+        for d in diarios:
+            u = self.usuario_dao.listar(d.usuario_id)
+            l = self.livro_dao.listar(d.livro_id)
+            print(
+                f"ID = {u.id} | Usuário = {u.nome} | Livro = {l.nome} | Nota = {d.nota} | Review = {d.review} | Data = {d.data}"
+            )
+
+    def listar_diarios_por_usuario_interativo(self):
+        try:
+            usuario_id = int(input("Digite o id do usuário: "))
+            self.listar_diarios_por_usuario(usuario_id)
         except ValueError:
             print("Id inválido")
 
-    # Inserir livro genero
-    def inserir_livro_genero(self):
-        livroId = input("Id do livro: ").strip()
-        generoId = input("Id do genero: ").strip()
-        sucesso = self.livroGenero_dao.inserir(livroId, generoId)
-        print(
-            "Registro inserido com sucesso"
-            if sucesso
-            else "Falha ao inserir registro"
-        )
+    def listar_diarios_por_usuario(self, usuario_id):
+        diarios = self.diario_dao.listar_por_usuario(usuario_id)
+        if not diarios:
+            print("Nenhum diário encontrado para este usuário.")
+        else:
+            print(f"Diários do usuário {usuario_id}:")
+            for d in diarios:
+                u = self.usuario_dao.listar(d.usuario_id)
+                l = self.livro_dao.listar(d.livro_id)
+                print(f"Diário de {u.nome}:\n  Livro {l.nome} | Nota {d.nota} | Review {d.review} | Data {d.data}")
 
-    # Remover livro genero
-    def remover_livro_genero(self):
+    def inserir_diario(self):
         try:
-            id = int(input("Id: ")) # ISSO NÃO FUNCIONA
-            sucesso = self.livroGenero_dao.remover(id)
+            livro_id = int(input("Id do livro: ").strip())
+            usuario_id = int(input("Id do usuário: ").strip())
+            nota = input("Nota (0-10): ").strip()
+            review = input("Review: ").strip()
+            data = input("Data (YYYY-MM-DD): ").strip()
+            sucesso = self.diario_dao.inserir(livro_id, usuario_id, nota, review, data)
+            print(
+                "Registro inserido com sucesso"
+                if sucesso
+                else "Falha ao inserir registro"
+            )
+        except ValueError:
+            print("IDs devem ser números inteiros.")
+
+    def atualizar_diario(self):
+        try:
+            usuario_id = int(input("Id do usuário: ").strip())
+            livro_id = int(input("ID do livro: ").strip())
+            nota = input("Nova nota: ").strip()
+            review = input("Novo review: ").strip()
+            data = input("Nova data (YYYY-MM-DD): ").strip()
+            sucesso = self.diario_dao.atualizar(livro_id, nota, review, data, usuario_id)
+            print(
+                "Registro atualizado com sucesso"
+                if sucesso
+                else "Falha ao atualizar registro"
+            )
+        except ValueError:
+            print("IDs devem ser números inteiros.")
+
+    def remover_diario(self):
+        try:
+            usuario_id = int(input("Id do usuário (para remover o diário): ").strip())
+            sucesso = self.diario_dao.remover(usuario_id)
             print(
                 "Registro removido com sucesso"
                 if sucesso
@@ -396,7 +488,6 @@ class InterfaceGrafica:
             )
         except ValueError:
             print("Id inválido")
-
 
 
 # Inicializa a aplicação

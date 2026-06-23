@@ -31,21 +31,21 @@ class DiarioDAO:
             print(f"Erro ao listar Diario: {erro}")
         return resultado
 
-    # Busca uma Diario pelo id do usuario
-    def listar(self, id):
+    # Busca todos os diários de um usuário (retorna lista)
+    def listar_por_usuario(self, usuario_id):
+        resultado = []
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
                         "SELECT livro_id, usuario_id, nota, review, data FROM Diario WHERE usuario_id = %s", 
-                        (id,)
+                        (usuario_id,)
                     )
-                    linha = cursor.fetchone()
-                    if linha:
-                        return self.criar_diario(linha)
+                    for linha in cursor.fetchall():
+                        resultado.append(self.criar_diario(linha))
         except Exception as erro:
             print(f"Erro ao buscar Diario: {erro}")
-        return None
+        return resultado
 
     # Insere uma nova Diario
     def inserir(self, livro_id, usuario_id, nota, review, data):
@@ -61,21 +61,21 @@ class DiarioDAO:
             print(f"Erro ao inserir Diario: {erro}")
         return False
 
-    # Atualiza uma Diario existente
-    def atualizar(self, livro_id, nota, review, data,usuario_id):
+    # Atualiza uma Diario existente (identificado pelo usuario_id)
+    def atualizar(self, livro_id, nota, review, data, usuario_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
                         "UPDATE Diario SET livro_id = %s, nota = %s, review = %s, data = %s WHERE usuario_id = %s",
-                        (livro_id, nota, review, data,usuario_id)
+                        (livro_id, nota, review, data, usuario_id)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
             print(f"Erro ao atualizar Diario: {erro}")
         return False
 
-    # Remove uma Diario
+    # Remove uma Diario (por usuario_id)
     def remover(self, usuario_id):
         try:
             with self.conectar() as connection:

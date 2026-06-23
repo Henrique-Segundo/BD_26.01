@@ -1,87 +1,86 @@
 import psycopg2
 from LivroGenero import LivroGenero
 
-# Classe DAO da entidade livroGenero
+# Classe DAO da entidade livro_genero
 class LivroGeneroDAO:
 
     # Conectar-se ao banco de dados
     def conectar(self):
         return psycopg2.connect(user="postgres", password="ufc123", host="localhost", port="5432", database="livros")
 
-    # Criar um objeto livroGenero a partir da linha de dados
+    # Criar um objeto livro_genero a partir da linha de dados
     def criar_livroGenero(self, linha):
         lg = LivroGenero()
         lg.livro_id = linha[0]
         lg.genero_id = linha[1]
         return lg
 
-    # Lista todas os livroGenero
+    # Lista todas os livro_genero
     def listar_todas(self):
         resultado = []
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute("SELECT livro_id, genero_id, login, senha FROM livroGenero")
+                    cursor.execute("SELECT livro_id, genero_id FROM livro_genero")
                     for linha in cursor.fetchall():
                         resultado.append(self.criar_livroGenero(linha))
         except Exception as erro:
-            print(f"Erro ao listar livroGenero: {erro}")
+            print(f"Erro ao listar livro_genero: {erro}")
         return resultado
 
-    # Busca um livroGenero pelo id do livro
-    def listar(self, livro_id):
+    def listar_por_livro(self, livro_id):
+        resultado = []
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "SELECT livro_id, genero_id FROM livroGenero WHERE livro_id = %s", 
+                        "SELECT livro_id, genero_id FROM livro_genero WHERE livro_id = %s", 
                         (livro_id,)
                     )
-                    linha = cursor.fetchone()
-                    if linha:
-                        return self.criar_livroGenero(linha)
+                    for linha in cursor.fetchall():
+                        resultado.append(self.livro_genero(linha))
         except Exception as erro:
-            print(f"Erro ao buscar livroGenero: {erro}")
-        return None
+            print(f"Erro ao buscar livro_genero: {erro}")
+        return resultado
 
-    # Insere uma nova livroGenero
+    # Insere uma nova relação livro_genero
     def inserir(self, livro_id, genero_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "INSERT INTO livroGenero (livro_id, genero_id) VALUES (%s, %s)",
+                        "INSERT INTO livro_genero (livro_id, genero_id) VALUES (%s, %s)",
                         (livro_id, genero_id)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
-            print(f"Erro ao inserir livroGenero: {erro}")
+            print(f"Erro ao inserir livro_genero: {erro}")
         return False
 
-    # Atualiza uma livroGenero existente
-    def atualizar(self, livro_id, genero_id):
+    # Remove uma relação específica (por livro_id e genero_id)
+    def remover_por_livro_genero(self, livro_id, genero_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "UPDATE livroGenero SET livro_id = %s, genero_id = %s WHERE livro_id = %s",
+                        "DELETE FROM livro_genero WHERE livro_id = %s AND genero_id = %s", 
                         (livro_id, genero_id)
                     )
                     return cursor.rowcount == 1
         except Exception as erro:
-            print(f"Erro ao atualizar livroGenero: {erro}")
+            print(f"Erro ao remover livro_genero: {erro}")
         return False
 
-    # Remove uma livroGenero
-    def remover(self, livro_id):
+    # Remove todas as relações de um livro
+    def remover_por_livro(self, livro_id):
         try:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "DELETE FROM livroGenero WHERE livro_id = %s", 
+                        "DELETE FROM livro_genero WHERE livro_id = %s", 
                         (livro_id,)
                     )
-                    return cursor.rowcount == 1
+                    return cursor.rowcount > 0
         except Exception as erro:
-            print(f"Erro ao remover livroGenero: {erro}")
+            print(f"Erro ao remover livro_genero: {erro}")
         return False

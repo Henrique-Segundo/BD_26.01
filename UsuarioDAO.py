@@ -36,7 +36,7 @@ class UsuarioDAO:
             with self.conectar() as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "SELECT id, nome, data_de_nascimento, descricao FROM usuario WHERE id = %s", 
+                        "SELECT id, nome, descricao, data_de_nascimento FROM usuario WHERE id = %s",
                         (id,)
                     )
                     linha = cursor.fetchone()
