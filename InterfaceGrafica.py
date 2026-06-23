@@ -182,7 +182,6 @@ class InterfaceGrafica:
             else:
                 print("Opção inválida")
 
-    # -------------------- Métodos para Usuário --------------------
     def listar_todos_usuario(self):
         usuarios = self.usuario_dao.listar_todas()
         if not usuarios:
@@ -244,7 +243,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # -------------------- Métodos para Livro --------------------
     def listar_todos_livro(self):
         livros = self.livro_dao.listar_todas()
         if not livros:
@@ -306,7 +304,6 @@ class InterfaceGrafica:
         except ValueError:
             print("Id inválido")
 
-    # -------------------- Métodos para Gênero --------------------
     def listar_todos_generos(self):
         generos = self.genero_dao.listar_todas()
         if not generos:
@@ -424,7 +421,7 @@ class InterfaceGrafica:
             u = self.usuario_dao.listar(d.usuario_id)
             l = self.livro_dao.listar(d.livro_id)
             print(
-                f"ID = {u.id} | Usuário = {u.nome} | Livro = {l.nome} | Nota = {d.nota} | Review = {d.review} | Data = {d.data}"
+                f"ID do usuário = {u.id} | Usuário = {u.nome} | Livro = {l.nome} | Nota = {d.nota} | Review = {d.review} | Data = {d.data}"
             )
 
     def listar_diarios_por_usuario_interativo(self):
