@@ -10,6 +10,3 @@ HENRIQUE SEGUNDO DA FONSECA - 566118
 JOAO AMAURI RODRIGUES DO NASCIMENTO - 566937
 
 RENAN ARAUJO POLAINAS - 566298
-
-### Comandos SQL para popular o banco de dados para teste:
-#### dados retirados do site goodreads ou criado.
